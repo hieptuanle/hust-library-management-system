@@ -8,6 +8,7 @@ import Layout from "./components/layout";
 import bookTitlesRoutes from "./routes/book-titles.routes";
 import bookTransactionsRoutes from "./routes/book-transactions.routes";
 import borrowRecordsRoutes from "./routes/borrow-records.routes";
+import reportRoutes from "./routes/reports.routes";
 
 const app = new Hono();
 
@@ -26,7 +27,7 @@ app.route("/users", userRoutes);
 app.route("/book-titles", bookTitlesRoutes);
 app.route("/book-transactions", bookTransactionsRoutes);
 app.route("/borrow-records", borrowRecordsRoutes);
-
+app.route("/reports", reportRoutes);
 export default {
   fetch: app.fetch,
   port: Bun.env.PORT || 3000,
