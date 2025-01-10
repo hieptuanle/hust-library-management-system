@@ -97,6 +97,13 @@ userRoutes.get("/create", async (c) => {
           <option value="admin">Kế toán</option>
         </select>
         <input
+          type="number"
+          name="deposit"
+          placeholder="Số tiền cọc"
+          class="border border-gray-300 p-2 rounded-md"
+          value="200000"
+        />
+        <input
           type="password"
           name="password"
           placeholder="Mật khẩu"

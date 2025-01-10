@@ -48,3 +48,10 @@ export const userInsertSchema = createInsertSchema(users, {
 });
 
 export const userSelectSchema = createSelectSchema(users);
+
+export const depositTransactions = sqliteTable("deposit_transactions", {
+  id: integer("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id),
+  amount: integer("amount").notNull(),
+  createdAt: integer("createdAt").default(sql`CURRENT_TIMESTAMP`),
+});

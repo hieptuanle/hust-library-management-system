@@ -33,11 +33,26 @@ export class UserService {
     return users[0];
   }
 
-  async createUser(user: any) {
-    const newUser = parse(schema.userInsertSchema, user);
+  async createUser(data: any) {
+    const newUser = parse(schema.userInsertSchema, data);
     console.log("newUser", newUser);
-    const result = await db.insert(schema.users).values(newUser);
-    console.log(result);
+    const amount = data.deposit as string;
+    if (newUser.roles.includes("student") && !amount) {
+      throw new Error("Số tiền cọc không được để trống cho học sinh");
+    }
+    const result = await db.transaction(async (tx) => {
+      const result = await tx.insert(schema.users).values({
+        ...newUser,
+        password: await Bun.password.hash(newUser.password),
+      }).returning();
+      if (newUser.roles.includes("student") && amount) {
+        await tx.insert(schema.depositTransactions).values({
+          userId: result[0].id,
+          amount: parseInt(amount),
+        });
+      }
+      return result[0];
+    });
     return result;
   }
 
