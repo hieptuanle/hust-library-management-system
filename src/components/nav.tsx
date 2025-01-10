@@ -68,6 +68,7 @@ const Nav: FC<{ roles?: string[] }> = async (props) => {
   const c = useRequestContext();
   const user = await authService.getUser(c);
   const roles = user?.roles;
+  const pathname = c.req.path;
   return (
     <aside class="col-span-12 md:col-span-3 bg-gray-200 p-2 rounded-md md:h-full">
       <h1 class="font-bold mb-2 text-gray-500">Quản Lý Thư Viện</h1>
@@ -76,7 +77,13 @@ const Nav: FC<{ roles?: string[] }> = async (props) => {
           !link.roles ||
           link.roles.some((role) => roles?.includes(role)) ||
           (link.roles.length === 0 && !roles) ? (
-            <a class="col-span-1" href={link.href} hx-boost="true">
+            <a
+              class={`col-span-1 p-2 rounded-md ${
+                pathname === link.href ? "bg-gray-300" : ""
+              }`}
+              href={link.href}
+              hx-boost="true"
+            >
               {link.name}
             </a>
           ) : null
