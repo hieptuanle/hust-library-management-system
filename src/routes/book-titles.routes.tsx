@@ -42,6 +42,7 @@ bookTitlesRoutes.get("/", async (c) => {
             <th class="text-left p-2 border border-slate-400">Thể loại</th>
             <th class="text-left p-2 border border-slate-400">Bìa sách</th>
             <th class="text-left p-2 border border-slate-400">Số lượng</th>
+            <th class="text-left p-2 border border-slate-400">Vị trí</th>
           </tr>
         </thead>
         <tbody>
@@ -80,6 +81,9 @@ bookTitlesRoutes.get("/", async (c) => {
                 }`}
               >
                 {bookTitle.quantity}
+              </td>
+              <td class="text-left p-2 border border-slate-400">
+                {bookTitle.slot}
               </td>
             </tr>
           ))}
