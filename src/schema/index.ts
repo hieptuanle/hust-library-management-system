@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-valibot";
 import {
   array,
@@ -12,7 +12,7 @@ import {
 } from "valibot";
 
 export const users = sqliteTable("users", {
-  id: integer("id").primaryKey(),
+  id: int("id").primaryKey(),
   name: text("name").notNull(),
   username: text("username").unique().notNull(),
   email: text("email").unique().notNull(),
@@ -21,8 +21,8 @@ export const users = sqliteTable("users", {
   password: text("password").notNull(),
   cardId: text("card_id").unique().notNull(),
   roles: text("roles", { mode: "json" }).$type<string[]>().default([]),
-  createdAt: integer("createdAt").default(sql`CURRENT_TIMESTAMP`),
-  updatedAt: integer("updatedAt").default(sql`CURRENT_TIMESTAMP`),
+  createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: text("updated_at").default(sql`CURRENT_TIMESTAMP`),
 });
 
 export const userInsertSchema = createInsertSchema(users, {
@@ -50,8 +50,49 @@ export const userInsertSchema = createInsertSchema(users, {
 export const userSelectSchema = createSelectSchema(users);
 
 export const depositTransactions = sqliteTable("deposit_transactions", {
-  id: integer("id").primaryKey(),
-  userId: integer("user_id").references(() => users.id),
-  amount: integer("amount").notNull(),
-  createdAt: integer("createdAt").default(sql`CURRENT_TIMESTAMP`),
+  id: int("id").primaryKey(),
+  userId: int("user_id").references(() => users.id),
+  amount: int("amount").notNull(),
+  createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
+});
+
+export const bookTitles = sqliteTable("book_titles", {
+  id: int("id").primaryKey(),
+  imageLink: text("image_link").notNull(),
+  name: text("name").notNull(),
+  author: text("author").notNull(),
+  publisher: text("publisher").notNull(),
+  year: int("year").notNull(),
+  genre: text("genre").notNull(),
+  slot: text("slot").notNull(),
+  createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: text("updated_at").default(sql`CURRENT_TIMESTAMP`),
+});
+
+export const bookTransactions = sqliteTable("book_transactions", {
+  id: int("id").primaryKey(),
+  bookTitleId: int("book_title_id").references(() => bookTitles.id),
+  quantity: int("quantity").notNull(),
+  borrowRecordId: int("borrow_record_id").references(() => borrowRecords.id),
+  description: text("description").notNull(),
+  userId: int("user_id").references(() => users.id),
+  createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
+});
+
+export const bookInventory = sqliteTable("book_inventory", {
+  id: int("id").primaryKey(),
+  bookTitleId: int("book_title_id").references(() => bookTitles.id),
+  quantity: int("quantity").notNull(),
+  createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: text("updated_at").default(sql`CURRENT_TIMESTAMP`),
+});
+
+export const borrowRecords = sqliteTable("borrow_records", {
+  id: int("id").primaryKey(),
+  bookTitleId: int("book_title_id").references(() => bookTitles.id),
+  quantity: int("quantity").notNull(),
+  userId: int("user_id").references(() => users.id),
+  createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
+  dueDate: text("due_date").notNull(),
+  returnedAt: text("returned_at"),
 });

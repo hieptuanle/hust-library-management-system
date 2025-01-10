@@ -5,6 +5,7 @@ import authRoutes from "./routes/auth";
 import userRoutes from "./routes/users.routes";
 import { jsxRenderer } from "hono/jsx-renderer";
 import Layout from "./components/layout";
+import bookTitlesRoutes from "./routes/book-titles.routes";
 
 const app = new Hono();
 
@@ -20,5 +21,5 @@ app.use(
 app.route("/auth", authRoutes);
 app.route("/users", userRoutes);
 app.route("/", home);
-
+app.route("/book-titles", bookTitlesRoutes);
 export default app;
