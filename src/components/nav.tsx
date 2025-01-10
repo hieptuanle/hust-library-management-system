@@ -18,16 +18,6 @@ const links: { name: string; href: string; roles?: string[] }[] = [
     roles: ["admin", "librarian"],
   },
   {
-    name: "Tạo phiếu nhập",
-    href: "/book-transactions/create",
-    roles: ["admin", "librarian"],
-  },
-  {
-    name: "Liệt kê phiếu nhập",
-    href: "/book-transactions",
-    roles: ["admin", "librarian"],
-  },
-  {
     name: "Tạo phiếu mượn",
     href: "/borrow-records/create",
     roles: ["admin", "librarian"],
@@ -36,6 +26,16 @@ const links: { name: string; href: string; roles?: string[] }[] = [
     name: "Lịch sử mượn",
     href: "/borrow-records",
     roles: ["admin", "librarian", "student"],
+  },
+  {
+    name: "Tạo phiếu nhập",
+    href: "/book-transactions/create",
+    roles: ["admin", "librarian"],
+  },
+  {
+    name: "Liệt kê phiếu nhập",
+    href: "/book-transactions",
+    roles: ["admin", "librarian"],
   },
   {
     name: "Tạo tài khoản",
