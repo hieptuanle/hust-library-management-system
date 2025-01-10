@@ -54,6 +54,9 @@ app.get("/create", async (c) => {
             Mã sách
           </label>
           <input type="text" name="bookTitleId" className="form-control" />
+          <div id="bookTitleId-help" className="form-text">
+            Vui lòng quét mã sách
+          </div>
         </div>
         <div className="mb-3">
           <label htmlFor="quantity" className="form-label">
@@ -69,13 +72,16 @@ app.get("/create", async (c) => {
         </div>
         <div className="mb-3">
           <label htmlFor="userId" className="form-label">
-            Người mượn
+            Mã học sinh
           </label>
           <input type="text" name="userId" className="form-control" />
+          <div id="userId-help" className="form-text">
+            VD: 1234567890
+          </div>
         </div>
         <div className="mb-3">
           <label htmlFor="dueDate" className="form-label">
-            Thời hạn
+            Thời hạn mượn
           </label>
           <input
             type="date"
