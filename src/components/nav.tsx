@@ -36,7 +36,7 @@ const links: { name: string; href: string; roles?: string[] }[] = [
   {
     name: "Mượn/trả sách",
     href: "/borrow-records/create",
-    roles: ["admin", "librarian", "student"],
+    roles: ["admin", "librarian"],
   },
   {
     name: "Lịch sử mượn/trả sách",
