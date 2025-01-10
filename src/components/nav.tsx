@@ -17,16 +17,10 @@ const links: { name: string; href: string; roles?: string[] }[] = [
     href: "/users",
     roles: ["admin", "librarian"],
   },
-
   {
-    name: "Tra cứu đầu sách",
+    name: "Đầu sách",
     href: "/book-titles",
     roles: ["admin", "librarian", "student"],
-  },
-  {
-    name: "Quản lý đầu sách",
-    href: "/book-titles/manage",
-    roles: ["admin", "librarian"],
   },
   {
     name: "Nhập/xuất sách",

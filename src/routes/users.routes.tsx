@@ -39,78 +39,105 @@ userRoutes.get("/create", async (c) => {
         hx-swap="innerHTML"
         hx-on:submit="document.getElementById('error-message').innerHTML = ''"
       >
-        <input
-          type="text"
-          name="name"
-          placeholder="Họ tên"
-          class="border border-gray-300 p-2 rounded-md"
-          value={getRandomName()}
-          required
-        />
-        <input
-          type="text"
-          name="username"
-          placeholder="Tên đăng nhập"
-          class="border border-gray-300 p-2 rounded-md"
-          value={getRandomUsername()}
-          required
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          class="border border-gray-300 p-2 rounded-md"
-          value={getRandomEmail()}
-          required
-        />
-        <input
-          type="text"
-          name="cellphone"
-          placeholder="Số điện thoại"
-          class="border border-gray-300 p-2 rounded-md"
-          value={getRandomCellphone()}
-          required
-        />
-        <input
-          type="text"
-          name="cardId"
-          placeholder="Mã sinh viên/nhân viên"
-          class="border border-gray-300 p-2 rounded-md"
-          value={getRandomCardId()}
-          required
-        />
-        <input
-          type="text"
-          name="address"
-          placeholder="Địa chỉ"
-          class="border border-gray-300 p-2 rounded-md"
-          value={getRandomAddress()}
-          required
-        />
-        <select
-          name="roles"
-          class="border border-gray-300 p-2 rounded-md"
-          required
-        >
-          <option value="student">Sinh viên</option>
-          <option value="librarian">Thủ thư</option>
-          <option value="admin">Kế toán</option>
-        </select>
-        <input
-          type="number"
-          name="deposit"
-          placeholder="Số tiền cọc"
-          class="border border-gray-300 p-2 rounded-md"
-          value="200000"
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Mật khẩu"
-          class="border border-gray-300 p-2 rounded-md"
-          value={"12345678"}
-          required
-        />
+        <div class="flex flex-col gap-2">
+          <label for="name">Họ tên</label>
+          <input
+            type="text"
+            name="name"
+            placeholder="Họ tên"
+            class="border border-gray-300 p-2 rounded-md"
+            value={getRandomName()}
+            required
+          />
+        </div>
+        <div class="flex flex-col gap-2">
+          <label for="username">Tên đăng nhập</label>
+          <input
+            type="text"
+            name="username"
+            placeholder="Tên đăng nhập"
+            class="border border-gray-300 p-2 rounded-md"
+            value={getRandomUsername()}
+            required
+          />
+        </div>
+        <div class="flex flex-col gap-2">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            class="border border-gray-300 p-2 rounded-md"
+            value={getRandomEmail()}
+            required
+          />
+        </div>
+        <div class="flex flex-col gap-2">
+          <label for="cellphone">Số điện thoại</label>
+          <input
+            type="text"
+            name="cellphone"
+            placeholder="Số điện thoại"
+            class="border border-gray-300 p-2 rounded-md"
+            value={getRandomCellphone()}
+            required
+          />
+        </div>
+        <div class="flex flex-col gap-2">
+          <label for="cardId">Mã sinh viên/nhân viên</label>
+          <input
+            type="text"
+            name="cardId"
+            placeholder="Mã sinh viên/nhân viên"
+            class="border border-gray-300 p-2 rounded-md"
+            value={getRandomCardId()}
+            required
+          />
+        </div>
+        <div class="flex flex-col gap-2">
+          <label for="address">Địa chỉ</label>
+          <input
+            type="text"
+            name="address"
+            placeholder="Địa chỉ"
+            class="border border-gray-300 p-2 rounded-md"
+            value={getRandomAddress()}
+            required
+          />
+        </div>
+        <div class="flex flex-col gap-2">
+          <label for="roles">Vai trò</label>
+          <select
+            name="roles"
+            class="border border-gray-300 p-2 rounded-md"
+            required
+          >
+            <option value="student">Sinh viên</option>
+            <option value="librarian">Thủ thư</option>
+            <option value="admin">Kế toán</option>
+          </select>
+        </div>
+        <div class="flex flex-col gap-2">
+          <label for="deposit">Số tiền cọc</label>
+          <input
+            type="number"
+            name="deposit"
+            placeholder="Số tiền cọc"
+            class="border border-gray-300 p-2 rounded-md"
+            value="200000"
+          />
+        </div>
+        <div class="flex flex-col gap-2">
+          <label for="password">Mật khẩu</label>
+          <input
+            type="password"
+            name="password"
+            placeholder="Mật khẩu"
+            class="border border-gray-300 p-2 rounded-md"
+            value={"12345678"}
+            required
+          />
+        </div>
         <button type="submit" class="bg-blue-500 text-white p-2 rounded-md">
           Tạo tài khoản
         </button>

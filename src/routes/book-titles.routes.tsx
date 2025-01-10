@@ -1,7 +1,302 @@
+import { authService } from "@/modules/auth-service";
 import { bookService } from "@/modules/book-serice";
 import { Hono } from "hono";
 
 const bookTitlesRoutes = new Hono();
+
+bookTitlesRoutes.delete("/:id", async (c) => {
+  const user = await authService.getUser(c);
+  const isAdmin =
+    user?.roles.includes("admin") || user?.roles.includes("librarian");
+
+  if (!isAdmin) {
+    return c.redirect("/book-titles");
+  }
+
+  const bookTitle = await bookService.getBookTitleById(
+    Number(c.req.param("id"))
+  );
+
+  if (!bookTitle) {
+    return c.html(<p class="text-red-500">Đầu sách không tồn tại.</p>);
+  }
+
+  try {
+    await bookService.deleteBookTitle(Number(c.req.param("id")));
+    return c.html(
+      <p class="text-green-500">Đầu sách đã được xóa thành công.</p>
+    );
+  } catch (error) {
+    return c.html(
+      <p class="text-red-500">
+        Đầu sách không được xóa. Lỗi:{" "}
+        {error instanceof Error ? error.message : "Không xác định"}
+      </p>
+    );
+  }
+});
+
+bookTitlesRoutes.put("/:id", async (c) => {
+  const user = await authService.getUser(c);
+  const isAdmin =
+    user?.roles.includes("admin") || user?.roles.includes("librarian");
+
+  if (!isAdmin) {
+    return c.redirect("/book-titles");
+  }
+
+  const bookTitle = await bookService.getBookTitleById(
+    Number(c.req.param("id"))
+  );
+
+  if (!bookTitle) {
+    c.status(404);
+    return c.render(
+      <div>
+        <p>Đầu sách không tồn tại.</p>
+      </div>,
+      { title: "Đầu sách không tồn tại" }
+    );
+  }
+
+  const formData = await c.req.parseBody();
+  try {
+    await bookService.updateBookTitle(bookTitle.id, formData);
+    return c.html(
+      <p class="text-green-500">Đầu sách đã được sửa thành công.</p>
+    );
+  } catch (error) {
+    return c.html(
+      <p class="text-red-500">
+        Đầu sách không được sửa. Lỗi:{" "}
+        {error instanceof Error ? error.message : "Không xác định"}
+      </p>
+    );
+  }
+});
+
+bookTitlesRoutes.get("/:id/edit", async (c) => {
+  const user = await authService.getUser(c);
+  const isAdmin =
+    user?.roles.includes("admin") || user?.roles.includes("librarian");
+
+  if (!isAdmin) {
+    return c.redirect("/book-titles");
+  }
+
+  const bookTitle = await bookService.getBookTitleById(
+    Number(c.req.param("id"))
+  );
+
+  if (!bookTitle) {
+    c.status(404);
+    return c.render(
+      <div>
+        <p>Đầu sách không tồn tại.</p>
+      </div>,
+      {
+        title: "Đầu sách không tồn tại",
+      }
+    );
+  }
+
+  return c.render(
+    <div class="flex flex-col gap-4">
+      <form
+        hx-put={`/book-titles/${bookTitle?.id}`}
+        hx-target="#book-title-edit-result"
+        hx-swap="innerHTML"
+        class="flex flex-col gap-2"
+      >
+        <div class="flex flex-col gap-2">
+          <label for="name">Tên sách</label>
+          <input
+            type="text"
+            name="name"
+            value={bookTitle?.name}
+            class="border border-slate-400 rounded-md p-2"
+          />
+        </div>
+        <div class="flex flex-col gap-2">
+          <label for="author">Tác giả</label>
+          <input
+            type="text"
+            name="author"
+            value={bookTitle?.author}
+            class="border border-slate-400 rounded-md p-2"
+          />
+        </div>
+        <div class="flex flex-col gap-2">
+          <label for="publisher">Nhà xuất bản</label>
+          <input
+            type="text"
+            name="publisher"
+            value={bookTitle?.publisher}
+            class="border border-slate-400 rounded-md p-2"
+          />
+        </div>
+        <div class="flex flex-col gap-2">
+          <label for="year">Năm xuất bản</label>
+          <input
+            type="number"
+            name="year"
+            value={bookTitle?.year}
+            class="border border-slate-400 rounded-md p-2"
+          />
+        </div>
+        <div class="flex flex-col gap-2">
+          <label for="genre">Thể loại</label>
+          <input
+            type="text"
+            name="genre"
+            value={bookTitle?.genre}
+            class="border border-slate-400 rounded-md p-2"
+          />
+        </div>
+        <div class="flex flex-col gap-2">
+          <label for="slot">Vị trí</label>
+          <input
+            type="text"
+            name="slot"
+            value={bookTitle?.slot}
+            class="border border-slate-400 rounded-md p-2"
+          />
+        </div>
+        <div class="flex flex-col gap-2">
+          <label for="imageLink">Link bìa sách</label>
+          <input
+            type="text"
+            name="imageLink"
+            value={bookTitle?.imageLink}
+            class="border border-slate-400 rounded-md p-2"
+          />
+        </div>
+        <button type="submit" class="bg-blue-500 text-white rounded-md p-2">
+          Sửa
+        </button>
+        <button
+          type="button"
+          class="bg-red-500 text-white rounded-md p-2"
+          hx-delete={`/book-titles/${bookTitle?.id}`}
+          hx-target="#book-title-edit-result"
+          hx-swap="innerHTML"
+        >
+          Xóa
+        </button>
+        <div class="flex flex-col gap-2" id="book-title-edit-result"></div>
+      </form>
+    </div>,
+    {
+      title: "Sửa đầu sách",
+    }
+  );
+});
+
+bookTitlesRoutes.post("/", async (c) => {
+  const user = await authService.getUser(c);
+  const isAdmin =
+    user?.roles.includes("admin") || user?.roles.includes("librarian");
+  if (!isAdmin) {
+    return c.redirect("/book-titles");
+  }
+  const formData = await c.req.parseBody();
+  try {
+    await bookService.createBookTitle(formData);
+    return c.html(
+      <p class="text-green-500">Đầu sách đã được tạo thành công.</p>
+    );
+  } catch (error) {
+    return c.html(
+      <p class="text-red-500">
+        Đầu sách không được tạo. Lỗi:{" "}
+        {error instanceof Error ? error.message : "Không xác định"}
+      </p>
+    );
+  }
+});
+
+bookTitlesRoutes.get("/create", async (c) => {
+  const user = await authService.getUser(c);
+  const isAdmin =
+    user?.roles.includes("admin") || user?.roles.includes("librarian");
+  if (!isAdmin) {
+    return c.redirect("/book-titles");
+  }
+  return c.render(
+    <div class="flex flex-col gap-4">
+      <form
+        hx-post="/book-titles"
+        hx-target="#book-title-create-result"
+        hx-swap="innerHTML"
+        class="flex flex-col gap-2"
+      >
+        <div class="flex flex-col gap-2">
+          <label for="name">Tên sách</label>
+          <input
+            type="text"
+            name="name"
+            class="border border-slate-400 rounded-md p-2"
+          />
+        </div>
+        <div class="flex flex-col gap-2">
+          <label for="author">Tác giả</label>
+          <input
+            type="text"
+            name="author"
+            class="border border-slate-400 rounded-md p-2"
+          />
+        </div>
+        <div class="flex flex-col gap-2">
+          <label for="publisher">Nhà xuất bản</label>
+          <input
+            type="text"
+            name="publisher"
+            class="border border-slate-400 rounded-md p-2"
+          />
+        </div>
+        <div class="flex flex-col gap-2">
+          <label for="year">Năm xuất bản</label>
+          <input
+            type="number"
+            name="year"
+            class="border border-slate-400 rounded-md p-2"
+          />
+        </div>
+        <div class="flex flex-col gap-2">
+          <label for="genre">Thể loại</label>
+          <input
+            type="text"
+            name="genre"
+            class="border border-slate-400 rounded-md p-2"
+          />
+        </div>
+        <div class="flex flex-col gap-2">
+          <label for="slot">Vị trí</label>
+          <input
+            type="text"
+            name="slot"
+            class="border border-slate-400 rounded-md p-2"
+          />
+        </div>
+        <div class="flex flex-col gap-2">
+          <label for="imageLink">Link bìa sách</label>
+          <input
+            type="text"
+            name="imageLink"
+            class="border border-slate-400 rounded-md p-2"
+          />
+        </div>
+        <button type="submit" class="bg-blue-500 text-white rounded-md p-2">
+          Tạo
+        </button>
+        <div class="flex flex-col gap-2" id="book-title-create-result"></div>
+      </form>
+    </div>,
+    {
+      title: "Tạo đầu sách",
+    }
+  );
+});
 
 bookTitlesRoutes.get("/", async (c) => {
   const q = c.req.query("q");
@@ -11,6 +306,10 @@ bookTitlesRoutes.get("/", async (c) => {
   searchParams.set("q", q || "");
   c.header("HX-Replace-Url", "/book-titles?" + searchParams.toString());
 
+  const user = await authService.getUser(c);
+  const isAdmin =
+    user?.roles.includes("admin") || user?.roles.includes("librarian");
+
   return c.render(
     <div class="flex flex-col gap-4">
       {/* Search box */}
@@ -19,7 +318,7 @@ bookTitlesRoutes.get("/", async (c) => {
           type="search"
           name="q"
           hx-get="/book-titles"
-          placeholder="Tìm kiếm..."
+          placeholder="Tìm kiếm đầu sách..."
           hx-select="#book-titles"
           hx-trigger="keyup changed delay:1s, search"
           hx-target="#book-titles"
@@ -27,7 +326,23 @@ bookTitlesRoutes.get("/", async (c) => {
           class="border border-slate-400 rounded-md p-2"
           value={q}
         />
+        <button type="submit" class="bg-blue-500 text-white rounded-md p-2">
+          Tìm
+        </button>
       </form>
+
+      {isAdmin && (
+        <div class="flex justify-start">
+          <a
+            href="/book-titles/create"
+            class="bg-gray-500 text-white rounded-md p-2"
+            hx-boost="true"
+          >
+            Tạo đầu sách
+          </a>
+        </div>
+      )}
+
       <table
         id="book-titles"
         class="table-auto border-collapse border border-slate-400 text-xs"
@@ -43,6 +358,9 @@ bookTitlesRoutes.get("/", async (c) => {
             <th class="text-left p-2 border border-slate-400">Bìa sách</th>
             <th class="text-left p-2 border border-slate-400">Số lượng</th>
             <th class="text-left p-2 border border-slate-400">Vị trí</th>
+            {isAdmin && (
+              <th class="text-left p-2 border border-slate-400">Tác vụ</th>
+            )}
           </tr>
         </thead>
         <tbody>
@@ -85,13 +403,20 @@ bookTitlesRoutes.get("/", async (c) => {
               <td class="text-left p-2 border border-slate-400">
                 {bookTitle.slot}
               </td>
+              {isAdmin && (
+                <td class="text-left p-2 border border-slate-400">
+                  <a href={`/book-titles/${bookTitle.id}/edit`} hx-boost="true">
+                    Sửa
+                  </a>
+                </td>
+              )}
             </tr>
           ))}
         </tbody>
       </table>
     </div>,
     {
-      title: "Tra cứu đầu sách",
+      title: "Danh sách đầu sách",
     }
   );
 });

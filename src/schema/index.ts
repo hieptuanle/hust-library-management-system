@@ -1,10 +1,16 @@
 import { sql } from "drizzle-orm";
 import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
-import { createInsertSchema, createSelectSchema } from "drizzle-valibot";
+import {
+  createInsertSchema,
+  createSelectSchema,
+  createUpdateSchema,
+} from "drizzle-valibot";
 import {
   array,
   email,
   minLength,
+  minValue,
+  number,
   pipe,
   string,
   transform,
@@ -67,6 +73,33 @@ export const bookTitles = sqliteTable("book_titles", {
   slot: text("slot").notNull(),
   createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
   updatedAt: text("updated_at").default(sql`CURRENT_TIMESTAMP`),
+});
+
+export const bookTitleInsertSchema = createInsertSchema(bookTitles, {
+  name: pipe(string(), minLength(3, "Tên sách phải có ít nhất 3 ký tự")),
+  author: pipe(string(), minLength(3, "Tên tác giả phải có ít nhất 3 ký tự")),
+  publisher: pipe(
+    string(),
+    minLength(3, "Nhà xuất bản phải có ít nhất 3 ký tự"),
+  ),
+  year: pipe(
+    union([number(), string()]),
+    transform(Number),
+    minValue(0, "Năm xuất bản phải lớn hơn 0"),
+  ),
+});
+export const bookTitleUpdateSchema = createUpdateSchema(bookTitles, {
+  name: pipe(string(), minLength(3, "Tên sách phải có ít nhất 3 ký tự")),
+  author: pipe(string(), minLength(3, "Tên tác giả phải có ít nhất 3 ký tự")),
+  publisher: pipe(
+    string(),
+    minLength(3, "Nhà xuất bản phải có ít nhất 3 ký tự"),
+  ),
+  year: pipe(
+    union([number(), string()]),
+    transform(Number),
+    minValue(0, "Năm xuất bản phải lớn hơn 0"),
+  ),
 });
 
 export const bookTransactions = sqliteTable("book_transactions", {
