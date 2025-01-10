@@ -16,7 +16,6 @@ export class AuthService {
     if (!isPasswordCorrect) {
       return false;
     }
-    console.log("secret", this.cookieSecret);
     await setSignedCookie(
       c,
       "user",
@@ -43,7 +42,6 @@ export class AuthService {
 
   async getUser(c: Context) {
     const user = await getSignedCookie(c, this.cookieSecret, "user");
-    console.log("user", user);
     if (!user) {
       return null;
     }

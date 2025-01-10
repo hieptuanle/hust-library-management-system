@@ -1,15 +1,15 @@
 import { Hono } from "hono";
-import Layout from "@/components/layout";
 import LoginForm from "@/components/login-form";
 import { authService } from "@/modules/auth-service";
 
 const authRoutes = new Hono();
 
 authRoutes.get("/login", async (c) => {
-  return c.html(
-    <Layout title="Đăng nhập">
-      <LoginForm username="hieple" password="12345678" message="" />
-    </Layout>
+  return c.render(
+    <LoginForm username="hieple" password="12345678" message="" />,
+    {
+      title: "Đăng nhập",
+    }
   );
 });
 
@@ -38,18 +38,8 @@ authRoutes.post("/login", async (c) => {
 
 authRoutes.get("/logout", async (c) => {
   await authService.logout(c);
-  return c.html(
-    <Layout title="Đăng xuất">
-      <p>Đăng xuất thành công. Chuyển hướng về trang chủ sau 1 giây...</p>
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `setTimeout(() => {
-          window.location.href = "/";
-        }, 1000);`,
-        }}
-      />
-    </Layout>
-  );
+  c.status(200);
+  return c.redirect("/");
 });
 
 export default authRoutes;
