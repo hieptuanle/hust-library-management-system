@@ -23,8 +23,13 @@ const links: { name: string; href: string; roles?: string[] }[] = [
     roles: ["admin", "librarian", "student"],
   },
   {
-    name: "Nhập/xuất sách",
+    name: "Tạo phiếu nhập/xuất sách",
     href: "/book-transactions/create",
+    roles: ["admin", "librarian"],
+  },
+  {
+    name: "Lịch sử nhập/xuất sách",
+    href: "/book-transactions",
     roles: ["admin", "librarian"],
   },
   {

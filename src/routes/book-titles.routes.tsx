@@ -201,7 +201,10 @@ bookTitlesRoutes.post("/", async (c) => {
   }
   const formData = await c.req.parseBody();
   try {
-    await bookService.createBookTitle(formData);
+    await bookService.createBookTitle({
+      ...formData,
+      userId: user?.id,
+    });
     return c.html(
       <p class="text-green-500">Đầu sách đã được tạo thành công.</p>
     );

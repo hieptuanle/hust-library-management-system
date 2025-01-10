@@ -112,6 +112,22 @@ export const bookTransactions = sqliteTable("book_transactions", {
   createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
 });
 
+export const bookTransactionInsertSchema = createInsertSchema(
+  bookTransactions,
+  {
+    bookTitleId: pipe(
+      union([number(), string()]),
+      transform(Number),
+      minValue(0, "Mã sách phải lớn hơn 0"),
+    ),
+    quantity: pipe(
+      union([number(), string()]),
+      transform(Number),
+    ),
+    description: pipe(string(), minLength(3, "Mô tả phải có ít nhất 3 ký tự")),
+  },
+);
+
 export const bookInventory = sqliteTable("book_inventory", {
   id: int("id").primaryKey(),
   bookTitleId: int("book_title_id").references(() => bookTitles.id),
