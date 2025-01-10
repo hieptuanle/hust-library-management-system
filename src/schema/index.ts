@@ -138,10 +138,28 @@ export const bookInventory = sqliteTable("book_inventory", {
 
 export const borrowRecords = sqliteTable("borrow_records", {
   id: int("id").primaryKey(),
-  bookTitleId: int("book_title_id").references(() => bookTitles.id),
+  bookTitleId: int("book_title_id").references(() => bookTitles.id).notNull(),
   quantity: int("quantity").notNull(),
-  userId: int("user_id").references(() => users.id),
+  userId: int("user_id").references(() => users.id).notNull(),
   createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
   dueDate: text("due_date").notNull(),
   returnedAt: text("returned_at"),
+});
+
+export const borrowRecordInsertSchema = createInsertSchema(borrowRecords, {
+  bookTitleId: pipe(
+    union([number(), string()]),
+    transform(Number),
+    minValue(0, "Mã sách phải lớn hơn 0"),
+  ),
+  quantity: pipe(
+    union([number(), string()]),
+    transform(Number),
+    minValue(0, "Số lượng phải lớn hơn 0"),
+  ),
+  userId: pipe(
+    union([number(), string()]),
+    transform(Number),
+    minValue(0, "Mã người mượn phải lớn hơn 0"),
+  ),
 });
