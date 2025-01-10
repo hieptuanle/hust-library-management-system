@@ -9,9 +9,11 @@ import bookTitlesRoutes from "./routes/book-titles.routes";
 import bookTransactionsRoutes from "./routes/book-transactions.routes";
 import borrowRecordsRoutes from "./routes/borrow-records.routes";
 import reportRoutes from "./routes/reports.routes";
+import { etag } from "hono/etag";
 
 const app = new Hono();
 
+app.use("static/*", etag());
 app.use("/static/*", serveStatic({ root: "./" }));
 
 app.use(
