@@ -4,10 +4,34 @@ import { Hono } from "hono";
 const bookTitlesRoutes = new Hono();
 
 bookTitlesRoutes.get("/", async (c) => {
-  const bookTitles = await bookService.getBookTitles();
+  const q = c.req.query("q");
+
+  const bookTitles = await bookService.getBookTitles(q);
+  const searchParams = new URLSearchParams();
+  searchParams.set("q", q || "");
+  c.header("HX-Replace-Url", "/book-titles?" + searchParams.toString());
+
   return c.render(
-    <div>
-      <table class="table-auto border-collapse border border-slate-400 text-xs">
+    <div class="flex flex-col gap-4">
+      {/* Search box */}
+      <form class="flex items-center gap-2" action="/book-titles" method="get">
+        <input
+          type="search"
+          name="q"
+          hx-get="/book-titles"
+          placeholder="Tìm kiếm..."
+          hx-select="#book-titles"
+          hx-trigger="keyup changed delay:1s, search"
+          hx-target="#book-titles"
+          hx-swap="outerHTML"
+          class="border border-slate-400 rounded-md p-2"
+          value={q}
+        />
+      </form>
+      <table
+        id="book-titles"
+        class="table-auto border-collapse border border-slate-400 text-xs"
+      >
         <thead class="bg-gray-200">
           <tr>
             <th class="text-left p-2 border border-slate-400">ID</th>
