@@ -74,6 +74,7 @@ const Nav: FC<{ roles?: string[] }> = async (props) => {
   const user = await authService.getUser(c);
   const roles = user?.roles;
   const pathname = c.req.path;
+  console.log(pathname);
   return (
     <aside class="col-span-12 md:col-span-3 bg-gray-200 p-2 rounded-md md:h-full">
       <h1 class="font-bold mb-2 text-gray-500">Quản Lý Thư Viện</h1>
