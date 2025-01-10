@@ -22,4 +22,7 @@ app.route("/auth", authRoutes);
 app.route("/users", userRoutes);
 app.route("/", home);
 app.route("/book-titles", bookTitlesRoutes);
-export default app;
+export default {
+  fetch: app.fetch,
+  port: Bun.env.PORT || 3000,
+};
