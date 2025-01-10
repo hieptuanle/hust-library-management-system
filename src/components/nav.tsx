@@ -43,26 +43,26 @@ const links: { name: string; href: string }[] = [
   },
   {
     name: "Đăng xuất",
-    href: "/logout",
+    href: "/auth/logout",
   },
   {
     name: "Đăng nhập",
-    href: "/login",
+    href: "/auth/login",
   },
 ];
 
 const Nav: FC = () => {
   return (
-    <nav class="col-span-12 md:col-span-3 bg-gray-200 p-2 rounded-md">
-      <h1 class="text-xl font-bold mb-2">QLTV</h1>
-      <ul class="grid grid-cols-2 md:grid-cols-1 gap-2 text-sm">
+    <aside class="col-span-12 md:col-span-3 bg-gray-200 p-2 rounded-md md:h-full">
+      <h1 class="font-bold mb-2 text-gray-500">Quản Lý Thư Viện</h1>
+      <nav class="grid grid-cols-2 md:grid-cols-1 gap-2 text-sm">
         {links.map((link) => (
-          <li class="col-span-1">
-            <a href={link.href}>{link.name}</a>
-          </li>
+          <a class="col-span-1" href={link.href} hx-boost="true">
+            {link.name}
+          </a>
         ))}
-      </ul>
-    </nav>
+      </nav>
+    </aside>
   );
 };
 export default Nav;

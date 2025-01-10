@@ -15,6 +15,13 @@
       "when": 1736480457654,
       "tag": "0001_wonderful_lilandra",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1736491386375,
+      "tag": "0002_careful_elektra",
+      "breakpoints": true
     }
   ]
 }
