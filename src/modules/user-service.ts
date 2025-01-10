@@ -9,6 +9,13 @@ export class UserService {
     return users;
   }
 
+  async changePassword(userId: number, newPassword: string) {
+    await db
+      .update(schema.users)
+      .set({ password: await Bun.password.hash(newPassword) })
+      .where(eq(schema.users.id, userId));
+  }
+
   async checkPassword(username: string, password: string) {
     const users = await db
       .select()

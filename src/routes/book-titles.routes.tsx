@@ -419,7 +419,7 @@ bookTitlesRoutes.get("/", async (c) => {
       </table>
     </div>,
     {
-      title: "Danh sách đầu sách",
+      title: "Liệt kê đầu sách",
     }
   );
 });

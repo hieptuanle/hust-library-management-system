@@ -13,6 +13,101 @@ import {
 
 const userRoutes = new Hono();
 
+userRoutes.post("/change-password", async (c) => {
+  const user = await authService.getUser(c);
+  if (!user) {
+    return c.redirect("/auth/login");
+  }
+
+  const formData = await c.req.parseBody();
+  const currentPassword = formData.currentPassword as string;
+  const newPassword = formData.newPassword as string;
+  const confirmPassword = formData.confirmPassword as string;
+
+  if (newPassword !== confirmPassword) {
+    c.status(400);
+    return c.html(
+      <p class="text-red-500">Mật khẩu mới và mật khẩu xác nhận không khớp</p>
+    );
+  }
+
+  const isPasswordCorrect = await userService.checkPassword(
+    user.username,
+    currentPassword
+  );
+  if (!isPasswordCorrect) {
+    c.status(400);
+    return c.html(<p class="text-red-500">Mật khẩu hiện tại không đúng</p>);
+  }
+
+  await userService.changePassword(user.id, newPassword);
+
+  return c.html(<div>Đổi mật khẩu thành công</div>);
+});
+
+userRoutes.get("/change-password", async (c) => {
+  const user = await authService.getUser(c);
+  if (!user) {
+    return c.redirect("/auth/login");
+  }
+
+  return c.render(
+    <div>
+      <form
+        hx-post="/users/change-password"
+        hx-swap="innerHTML"
+        hx-on:submit="document.getElementById('change-password-result').innerHTML = ''"
+        target="#change-password-result"
+      >
+        <div class="mb-3">
+          <label for="password" class="form-label">
+            Mật khẩu hiện tại
+          </label>
+          <input
+            type="password"
+            name="currentPassword"
+            placeholder="Mật khẩu hiện tại"
+            class="form-control"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="newPassword" class="form-label">
+            Mật khẩu mới
+          </label>
+          <input
+            type="password"
+            name="newPassword"
+            placeholder="Mật khẩu mới"
+            class="form-control"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="confirmPassword" class="form-label">
+            Nhập lại mật khẩu mới
+          </label>
+          <input
+            type="password"
+            name="confirmPassword"
+            placeholder="Nhập lại mật khẩu mới"
+            class="form-control"
+            required
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">
+          Đổi mật khẩu
+        </button>
+
+        <div id="change-password-result" class="text-sm"></div>
+      </form>
+    </div>,
+    {
+      title: "Đổi mật khẩu",
+    }
+  );
+});
+
 userRoutes.get("/create", async (c) => {
   const user = await authService.getUser(c);
   if (!user) {

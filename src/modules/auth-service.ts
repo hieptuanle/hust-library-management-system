@@ -46,7 +46,7 @@ export class AuthService {
       return null;
     }
     return JSON.parse(user) as {
-      id: string;
+      id: number;
       name: string;
       username: string;
       roles: string[];

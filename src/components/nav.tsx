@@ -8,6 +8,36 @@ const links: { name: string; href: string; roles?: string[] }[] = [
     href: "/",
   },
   {
+    name: "Liệt kê đầu sách",
+    href: "/book-titles",
+    roles: ["admin", "librarian", "student"],
+  },
+  {
+    name: "Tạo đầu sách",
+    href: "/book-titles/create",
+    roles: ["admin", "librarian"],
+  },
+  {
+    name: "Tạo phiếu nhập",
+    href: "/book-transactions/create",
+    roles: ["admin", "librarian"],
+  },
+  {
+    name: "Liệt kê phiếu nhập",
+    href: "/book-transactions",
+    roles: ["admin", "librarian"],
+  },
+  {
+    name: "Tạo phiếu mượn",
+    href: "/borrow-records/create",
+    roles: ["admin", "librarian"],
+  },
+  {
+    name: "Lịch sử mượn",
+    href: "/borrow-records",
+    roles: ["admin", "librarian", "student"],
+  },
+  {
     name: "Tạo tài khoản",
     href: "/users/create",
     roles: ["admin", "librarian"],
@@ -16,31 +46,6 @@ const links: { name: string; href: string; roles?: string[] }[] = [
     name: "Quản lý tài khoản",
     href: "/users",
     roles: ["admin", "librarian"],
-  },
-  {
-    name: "Đầu sách",
-    href: "/book-titles",
-    roles: ["admin", "librarian", "student"],
-  },
-  {
-    name: "Tạo phiếu nhập/xuất sách",
-    href: "/book-transactions/create",
-    roles: ["admin", "librarian"],
-  },
-  {
-    name: "Lịch sử nhập/xuất sách",
-    href: "/book-transactions",
-    roles: ["admin", "librarian"],
-  },
-  {
-    name: "Mượn sách",
-    href: "/borrow-records/create",
-    roles: ["admin", "librarian"],
-  },
-  {
-    name: "Lịch sử mượn/trả sách",
-    href: "/borrow-records",
-    roles: ["admin", "librarian", "student"],
   },
   {
     name: "Báo cáo",

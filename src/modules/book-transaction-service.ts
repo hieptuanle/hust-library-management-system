@@ -51,7 +51,7 @@ export class BookTransactionService {
         validatedBookTransaction.quantity;
       if (afterTransactionQuantity < 0) {
         throw new Error(
-          `Số lượng sách sau khi tạo phiếu nhập/xuất không được nhỏ hơn 0. Số lượng sách còn lại: ${afterTransactionQuantity}`,
+          `Số lượng sách sau khi tạo phiếu nhập không được nhỏ hơn 0. Số lượng sách còn lại: ${afterTransactionQuantity}`,
         );
       }
 
