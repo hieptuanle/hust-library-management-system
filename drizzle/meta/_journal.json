@@ -22,6 +22,27 @@
       "when": 1736491386375,
       "tag": "0002_careful_elektra",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1736497053232,
+      "tag": "0003_happy_magneto",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1736497278838,
+      "tag": "0004_lively_jane_foster",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1736498672830,
+      "tag": "0005_nifty_psylocke",
+      "breakpoints": true
     }
   ]
 }

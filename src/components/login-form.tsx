@@ -6,11 +6,7 @@ const LoginForm: FC<{
   message?: string;
 }> = (props) => {
   return (
-    <form
-      class="flex flex-col gap-2"
-      hx-post="/auth/login"
-      hx-target-error="closest form"
-    >
+    <form class="flex flex-col gap-2" hx-post="/auth/login">
       <input
         type="text"
         name="username"

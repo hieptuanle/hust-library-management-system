@@ -1,6 +1,7 @@
 import { db } from "@/db/db";
 import * as schema from "@/schema";
 import { eq } from "drizzle-orm";
+import { parse, ValiError } from "valibot";
 
 export class UserService {
   async getUsers() {
@@ -30,6 +31,23 @@ export class UserService {
     }
 
     return users[0];
+  }
+
+  async createUser(user: any) {
+    const newUser = parse(schema.userInsertSchema, user);
+    console.log("newUser", newUser);
+    const result = await db.insert(schema.users).values(newUser);
+    console.log(result);
+    return result;
+  }
+
+  getCreateUserErrorMessage(
+    error: ValiError<typeof schema.userInsertSchema> | Error,
+  ) {
+    if (error instanceof ValiError) {
+      return error.issues.map((issue) => issue.message).join(", ");
+    }
+    return error.message;
   }
 }
 

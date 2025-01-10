@@ -13,6 +13,19 @@ const Layout: FC<{ title: string; children: Child }> = (props) => {
           integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+"
           crossorigin="anonymous"
         ></script>
+        <meta
+          name="htmx-config"
+          content='{
+        "responseHandling":[
+            {"code":"204", "swap": false},
+            {"code":"[23]..", "swap": true},
+            {"code":"422", "swap": true},
+            {"code":"40[013]", "swap": true, "error":true},
+            {"code":"[45]..", "swap": false, "error":true},
+            {"code":"...", "swap": true}
+        ]
+    }'
+        />
       </head>
       <body class="flex flex-col md:grid md:grid-cols-12 md:max-w-screen-md mx-auto gap-2 p-2 min-h-screen">
         <Nav />
