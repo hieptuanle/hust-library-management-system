@@ -309,7 +309,7 @@ bookTitlesRoutes.get("/", async (c) => {
 
   const currentPage = parseInt(page || "1");
 
-  const bookTitles = await bookService.getBookTitles(q, currentPage);
+  const bookTitles = await bookService.getBookTitles(q, currentPage, pageSize);
   const bookTitlesCount = await bookService.getBookTitlesCount(q);
   const pageCount = Math.ceil(bookTitlesCount / pageSize);
 
