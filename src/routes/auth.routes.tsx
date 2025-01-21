@@ -6,7 +6,29 @@ const authRoutes = new Hono();
 
 authRoutes.get("/login", async (c) => {
   return c.render(
-    <LoginForm username="hieple" password="12345678" message="" />,
+    <div>
+      <LoginForm username="hieple" password="12345678" message="" />
+      <div class="flex flex-col gap-2 mt-4">
+        <p>Các tài khoản mẫu</p>
+        <div class="flex flex-col gap-2">
+          <details class="border border-slate-400 rounded-md p-2">
+            <summary class="cursor-pointer">Admin</summary>
+            <p>Username: hieple</p>
+            <p>Password: 12345678</p>
+          </details>
+          <details class="border border-slate-400 rounded-md p-2">
+            <summary class="cursor-pointer">Librarian</summary>
+            <p>Username: dungngoclai</p>
+            <p>Password: 12345678</p>
+          </details>
+          <details class="border border-slate-400 rounded-md p-2">
+            <summary class="cursor-pointer">Student</summary>
+            <p>Username: lamtran</p>
+            <p>Password: 12345678</p>
+          </details>
+        </div>
+      </div>
+    </div>,
     {
       title: "Đăng nhập",
     }
