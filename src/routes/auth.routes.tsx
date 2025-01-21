@@ -12,17 +12,17 @@ authRoutes.get("/login", async (c) => {
         <p>Các tài khoản mẫu</p>
         <div class="flex flex-col gap-2">
           <details class="border border-slate-400 rounded-md p-2">
-            <summary class="cursor-pointer">Admin</summary>
+            <summary class="cursor-pointer">Kế toán trưởng</summary>
             <p>Username: hieple</p>
             <p>Password: 12345678</p>
           </details>
           <details class="border border-slate-400 rounded-md p-2">
-            <summary class="cursor-pointer">Librarian</summary>
+            <summary class="cursor-pointer">Thủ thư</summary>
             <p>Username: dungngoclai</p>
             <p>Password: 12345678</p>
           </details>
           <details class="border border-slate-400 rounded-md p-2">
-            <summary class="cursor-pointer">Student</summary>
+            <summary class="cursor-pointer">Độc giả</summary>
             <p>Username: lamtran</p>
             <p>Password: 12345678</p>
           </details>
