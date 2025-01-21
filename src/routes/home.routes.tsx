@@ -26,7 +26,9 @@ app.get("/", async (c) => {
       ) : (
         <p>
           Bạn có thể đăng nhập bằng cách nhấn vào nút{" "}
-          <a href="/auth/login">Đăng nhập</a>
+          <a href="/auth/login" hx-boost="true">
+            Đăng nhập
+          </a>
         </p>
       )}
     </div>,
