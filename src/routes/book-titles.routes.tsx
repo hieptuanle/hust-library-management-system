@@ -303,10 +303,19 @@ bookTitlesRoutes.get("/create", async (c) => {
 
 bookTitlesRoutes.get("/", async (c) => {
   const q = c.req.query("q");
+  const page = c.req.query("page");
 
-  const bookTitles = await bookService.getBookTitles(q);
+  const pageSize = 10;
+
+  const currentPage = parseInt(page || "1");
+
+  const bookTitles = await bookService.getBookTitles(q, currentPage);
+  const bookTitlesCount = await bookService.getBookTitlesCount(q);
+  const pageCount = Math.ceil(bookTitlesCount / pageSize);
+
   const searchParams = new URLSearchParams();
   searchParams.set("q", q || "");
+  searchParams.set("page", page || "1");
   c.header("HX-Replace-Url", "/book-titles?" + searchParams.toString());
 
   const user = await authService.getUser(c);
@@ -334,17 +343,31 @@ bookTitlesRoutes.get("/", async (c) => {
         </button>
       </form>
 
-      {isAdmin && (
-        <div class="flex justify-start">
+      <div class="flex justify-start">
+        <div class="flex justify-end gap-2 items-center">
           <a
-            href="/book-titles/create"
-            class="bg-gray-500 text-white rounded-md p-2"
+            href={`/book-titles?page=${currentPage - 1}`}
+            class={`${
+              currentPage === 1 ? "hidden" : ""
+            } border border-slate-400 rounded-md p-2`}
             hx-boost="true"
           >
-            Tạo đầu sách
+            Trang trước
+          </a>
+          <span class="p-2">
+            {currentPage} / {pageCount}
+          </span>
+          <a
+            href={`/book-titles?page=${currentPage + 1}`}
+            class={`${
+              currentPage === pageCount ? "hidden" : ""
+            } border border-slate-400 rounded-md p-2`}
+            hx-boost="true"
+          >
+            Trang sau
           </a>
         </div>
-      )}
+      </div>
 
       <table
         id="book-titles"
@@ -356,7 +379,7 @@ bookTitlesRoutes.get("/", async (c) => {
             <th class="text-left p-2 border border-slate-400">Tên sách</th>
             <th class="text-left p-2 border border-slate-400">Tác giả</th>
             <th class="text-left p-2 border border-slate-400">Nhà xuất bản</th>
-            <th class="text-left p-2 border border-slate-400">Năm xuất bản</th>
+            {/* <th class="text-left p-2 border border-slate-400">Năm xuất bản</th> */}
             <th class="text-left p-2 border border-slate-400">Thể loại</th>
             <th class="text-left p-2 border border-slate-400">Bìa sách</th>
             <th class="text-left p-2 border border-slate-400">Số lượng</th>
@@ -381,9 +404,9 @@ bookTitlesRoutes.get("/", async (c) => {
               <td class="text-left p-2 border border-slate-400">
                 {bookTitle.publisher}
               </td>
-              <td class="text-left p-2 border border-slate-400">
+              {/* <td class="text-left p-2 border border-slate-400">
                 {bookTitle.year}
-              </td>
+              </td> */}
               <td class="text-left p-2 border border-slate-400">
                 {bookTitle.genre}
               </td>

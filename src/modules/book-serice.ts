@@ -35,7 +35,7 @@ class BookService {
     return results[0];
   }
 
-  async getBookTitles(q: string = "") {
+  async getBookTitles(q: string = "", page: number = 1, pageSize: number = 20) {
     const query = db.select({
       ...getTableColumns(schema.bookTitles),
       quantity: schema.bookInventory.quantity,
@@ -48,7 +48,17 @@ class BookService {
         sql`${schema.bookTitles.name} LIKE ${"%" + q + "%"}`,
       );
     }
+    if (page) {
+      query.limit(pageSize).offset((page - 1) * pageSize);
+    }
     return query.execute();
+  }
+
+  async getBookTitlesCount(q: string = "") {
+    const query = db.select({
+      count: sql<number>`COUNT(*)`,
+    }).from(schema.bookTitles);
+    return query.execute().then((res) => res[0].count);
   }
 }
 
