@@ -284,6 +284,16 @@ userRoutes.get("/", async (c) => {
   return c.render(
     <div class="w-full overflow-x-auto">
       <table class="table-auto border-collapse border border-slate-400 text-xs">
+        <colgroup>
+          <col width="10%" />
+          <col width="20%" />
+          <col width="20%" />
+          <col width="20%" />
+          <col width="20%" />
+          <col width="20%" />
+          <col width="20%" />
+          <col width="20%" />
+        </colgroup>
         <thead class="bg-gray-200">
           <tr>
             <th class="text-left p-2 border border-slate-400">ID</th>
@@ -307,22 +317,22 @@ userRoutes.get("/", async (c) => {
               <td class="text-left p-2 border border-slate-400">
                 {user.username}
               </td>
-              <td class="text-left p-2 border border-slate-400">
+              <td class="text-left p-2 border border-slate-400 overflow-auto">
                 {user.email}
               </td>
-              <td class="text-left p-2 border border-slate-400">
+              <td class="text-left p-2 border border-slate-400 overflow-auto">
                 {user.cellphone}
               </td>
-              <td class="text-left p-2 border border-slate-400">
+              <td class="text-left p-2 border border-slate-400 overflow-auto">
                 {user.cardId}
               </td>
-              <td class="text-left p-2 border border-slate-400">
+              <td class="text-left p-2 border border-slate-400 overflow-auto">
                 {user.address}
               </td>
-              <td class="text-left p-2 border border-slate-400">
+              <td class="text-left p-2 border border-slate-400 overflow-auto">
                 {user.roles?.join(", ")}
               </td>
-              <td class="text-left p-2 border border-slate-400">
+              <td class="text-left p-2 border border-slate-400 overflow-auto">
                 <div class="flex flex-col gap-1 text-xs">
                   <a href={`/users/${user.id}`} class="text-blue-500">
                     Sửa

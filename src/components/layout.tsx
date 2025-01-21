@@ -54,7 +54,7 @@ const Layout: FC<{ title: string; children: Child }> = (props) => {
           </div>
         </div>
 
-        <div class="flex flex-col md:grid md:grid-cols-12 md:max-w-screen-md mx-auto gap-2 p-2 min-h-screen">
+        <div class="flex flex-col md:grid md:grid-cols-12 md:max-w-screen-lg mx-auto gap-2 p-2 min-h-screen">
           <Nav />
           <article class="col-span-12 md:col-span-9 p-2 flex flex-col gap-2 md:h-full border border-gray-300 rounded-md grow">
             <header>
